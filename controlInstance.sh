@@ -114,7 +114,15 @@ then
     echo "Adding new entry in ~/.ssh/config. This is done for the first time."
     addHost $ec2 $host
   fi
-else
+elif [ $control == "stop" ]
+then
   echo "Stopping ID: $id ($ec2)"
   aws --profile $prof ec2 stop-instances --instance-ids $id
+elif [ $control == "modify" ]
+then
+  echo "Modifying ID: $id ($ec2)"
+  attribute=$4
+  value=$5
+  #echo "aws --profile $prof ec2 modify-instance-attribute --instance-id $id --$attribute \"{\\\"Value\\\": \\\"$value\\\"}\""
+  aws --profile $prof ec2 modify-instance-attribute --instance-id $id --$attribute "{\"Value\": \"$value\"}"
 fi
